@@ -30,6 +30,7 @@ public class GameplayScene implements GameScene {
     private int score;
     private static final int pointsPerAsteroid = 100;
     private boolean spaceKeyWasPressed = false;
+    private float asteroidElapsedTime = 0;
     private float healthElapsedTime = 0;
     private static final float HEALTH_FALL_INTERVAL = 5f; // Adjust this interval as needed
 
@@ -114,6 +115,9 @@ public class GameplayScene implements GameScene {
         
         
         entityManager.updateAllEntities();       
+        
+        asteroidElapsedTime += Gdx.graphics.getDeltaTime();
+        healthElapsedTime += Gdx.graphics.getDeltaTime();
    
         // Spawn asteroids continuously for 15 seconds
         elapsedTime += Gdx.graphics.getDeltaTime();
