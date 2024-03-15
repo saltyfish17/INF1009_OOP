@@ -1,28 +1,38 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.mygdx.engine.ParentEntity;
 
-public class Bullet extends GameObject {
+public class Bullet extends ParentEntity {
     private static final int BULLET_SPEED = 10;
-    private float width; // Add width and height fields
-    private float height;
-
-    public Bullet(float startX, float startY, float width, float height) {
-        super(startX, startY, new Texture("bullet.png"));
-        this.width = width; // Initialize width and height
-        this.height = height;
+    private static final float BULLET_SCALE = 0.05f;
+    
+    // constructors
+    public Bullet(float startX, float startY, float width, float height, Texture texture) {
+        super(startX, startY, width, height, BULLET_SPEED, BULLET_SCALE, texture);
+        this.scale = BULLET_SCALE;
     }
 
-    @Override
+    // abstract methods from ParentEntity
+	@Override
     public void update() {
-        setY(getY() + BULLET_SPEED);
+        setY(getY() + getSpeed());
     }
 
-    public float getWidth() {
-        return width;
-    }
+	@Override
+	public void render(SpriteBatch batch, float dt) {
+		batch.draw(getTexture(), getX(), getY(), getTextureWidth() * getScale(), getTextureHeight() * getScale());
+	}
 
-    public float getHeight() {
-        return height;
-    }
+	@Override
+	public Class<? extends ParentEntity> getEntityType() {
+		return Bullet.class;
+	}
+
+	@Override
+	public void handleCollision(ParentEntity entityA, ParentEntity entityB) {
+		// TODO Auto-generated method stub
+		
+	}
 }
