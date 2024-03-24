@@ -23,7 +23,6 @@ public class Spacedefender extends ApplicationAdapter {
         sceneManager.render(batch);
     }
 
-
     @Override
     public void dispose() {
         batch.dispose();

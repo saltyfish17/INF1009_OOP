@@ -1,7 +1,5 @@
 package com.mygdx.game;
 
-import java.util.ArrayList;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
@@ -9,9 +7,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.math.MathUtils;
-import java.util.ArrayList;
-import java.util.List;
 import com.mygdx.engine.*;
 
 public class GameplayScene implements GameScene {
@@ -22,15 +17,11 @@ public class GameplayScene implements GameScene {
     private OrthographicCamera camera;
     private Player player;
     private EntityManagerNew entityManager;
-    private float asteroidScale = 0.03f;
     private int numAsteroids = 10;
-    // private float scale = 0.3f;
     private float elapsedTime = 0;
-    private static final float FALL_INTERVAL = 0.5f; // Adjust this interval as needed
-    private int score;
-    private static final int pointsPerAsteroid = 100;
-    private boolean spaceKeyWasPressed = false;
     private float asteroidElapsedTime = 0;
+    private static final float FALL_INTERVAL = 0.5f; // Adjust this interval as needed
+    private boolean spaceKeyWasPressed = false;
     private float healthElapsedTime = 0;
     private static final float HEALTH_FALL_INTERVAL = 5f; // Adjust this interval as needed
 
@@ -52,14 +43,12 @@ public class GameplayScene implements GameScene {
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 600);
-
-        player = new Player(50, 50, playerTexture, bulletTexture);
-        // initialize Player with player texture only
-        // player = new Player(playerTexture);
-        // player.setBulletTexture(bulletTexture);
-        player.setSceneManager(sceneManager);
         
         entityManager = new EntityManagerNew();
+        
+        player = new Player(50, 50, playerTexture, bulletTexture, entityManager);
+       
+        player.setSceneManager(sceneManager);
         
         // add player to entityManager
         entityManager.addEntity(player); 
@@ -71,7 +60,7 @@ public class GameplayScene implements GameScene {
 
         for (int i = 0; i < numAsteroids; i++) {        	
         	// spawn new Asteroid
-            Asteroid asteroid = new Asteroid(asteroidTexture);
+            Asteroid asteroid = new Asteroid(asteroidTexture, entityManager);
             // add asteroid to entityManager
             entityManager.addEntity(asteroid); 
         }
@@ -90,7 +79,7 @@ public class GameplayScene implements GameScene {
 
         	entityManager.renderAllEntities(batch, dt);
 
-	        float heartIconWidth = 20;
+	        float heartIconWidth =20;
 	        float heartIconHeight = 20;
 	        for (int i = 0; i < player.getHealth(); i++) {
 	            batch.draw(heartTexture, 600 + i * (heartIconWidth + 5), Gdx.graphics.getHeight() - heartIconHeight + 50,
@@ -101,36 +90,32 @@ public class GameplayScene implements GameScene {
 
         batch.end();
 
-        // Update game logic
         update(dt);
     }
 
     @Override
     public void update(float dt) {
-    	
-    	// Check for collisions
+        // Check for collisions
         CollisionManagement collisionManagement = new CollisionManagement();
         collisionManagement.checkCollisions(entityManager);
-        // entityManagement.printEntities();
         
+        entityManager.updateAllEntities();
         
-        entityManager.updateAllEntities();       
-        
-        asteroidElapsedTime += Gdx.graphics.getDeltaTime();
+        asteroidElapsedTime = Gdx.graphics.getDeltaTime();
         healthElapsedTime += Gdx.graphics.getDeltaTime();
    
         // Spawn asteroids continuously for 15 seconds
         elapsedTime += Gdx.graphics.getDeltaTime();
         if (elapsedTime >= FALL_INTERVAL) {
-//            spawnAsteroid();
-        	Asteroid asteroid = new Asteroid(asteroidTexture);
+        //    spawnAsteroid();
+        	Asteroid asteroid = new Asteroid(asteroidTexture, entityManager);
         	entityManager.addEntity(asteroid);
             elapsedTime -= FALL_INTERVAL; // Reset the timer
         }
         
-     // Spawn 1 health power up every ? seconds
+        // Spawn 1 health power up every ? seconds
         if (healthElapsedTime >= HEALTH_FALL_INTERVAL) {
-        	HealthPowerUp healthPowerUp = new HealthPowerUp(healthPowerUpTexture);
+        	HealthPowerUp healthPowerUp = new HealthPowerUp(healthPowerUpTexture, entityManager);
         	entityManager.addEntity(healthPowerUp);
         	
         	healthElapsedTime -= HEALTH_FALL_INTERVAL;

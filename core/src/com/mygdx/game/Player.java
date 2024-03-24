@@ -1,57 +1,56 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
-
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.engine.ParentEntity;
 import com.mygdx.engine.SceneManager;
-import com.mygdx.engine.SimulationLifecycleManagement;
-import com.mygdx.engine.CollisionManagement;
+import com.mygdx.engine.EntityManagerNew;
 
 public class Player extends ParentEntity {
     private static final int PLAYER_SPEED = 5;
     private static final int PLAYER_START_X = 200;
     private static final int PLAYER_START_Y = 50;
-    private static final int PLAYER_HEALTH = 10;
+    private static final int PLAYER_HEALTH = 5;
     private static final float PLAYER_SCALE = 0.3f;
-    
-    private SimulationLifecycleManagement simulationLifecycleManagement;
+
     private Texture bulletTexture; // Add bulletTexture as a member variable
     private SceneManager sceneManager;
+    private EntityManagerNew entityManager; 
     private int health;
     private int score;
-    
 
     public void setSceneManager(SceneManager sceneManager) {
         this.sceneManager = sceneManager;
     }
     
     // constructors
-    public Player(Texture texture) {
+    public Player(Texture texture, EntityManagerNew entityManager) {
     	super(PLAYER_START_X, PLAYER_START_Y, 0, 0, PLAYER_SPEED, PLAYER_SCALE, texture); {
     		this.bulletTexture = null;
     		this.health = PLAYER_HEALTH;
     		this.score = 0;
+    		this.entityManager = entityManager;
     	}
     }
     
-    public Player(Texture playerTexture, Texture bulletTexture) {
+    public Player(Texture playerTexture, Texture bulletTexture, EntityManagerNew entityManager) {
     	super(PLAYER_START_X, PLAYER_START_Y, 0, 0, PLAYER_SPEED, PLAYER_SCALE, playerTexture); 
     		this.bulletTexture = bulletTexture;
     		this.health = PLAYER_HEALTH;
     		this.score = 0;
+    		this.entityManager = entityManager;
     }
     
-    public Player(float width, float height, Texture texture, Texture bulletTexture) {
+    public Player(float width, float height, Texture texture, Texture bulletTexture, EntityManagerNew entityManager) {
         super(PLAYER_START_X, PLAYER_START_Y, width, height, PLAYER_SPEED, PLAYER_SCALE, texture);
         this.bulletTexture = bulletTexture; // Initialize bulletTexture
         this.health = PLAYER_HEALTH;
         this.score = 0;
+        this.entityManager = entityManager;
     }
 
-	// getter setter methods
     public Texture getBulletTexture() {
 		return bulletTexture;
 	}
@@ -76,24 +75,19 @@ public class Player extends ParentEntity {
 		this.score = score;
 	}
 
-	// Player class methods
     public Bullet shoot() {
-        float bulletWidth = 10; // Set the desired width of the bullet
+        float bulletWidth = 5; // Set the desired width of the bullet
         float bulletHeight = 10; // Set the desired height of the bullet
-        
-        // System.out.println("Shot:" + new Bullet(bulletHeight, bulletHeight, bulletHeight, bulletHeight, bulletTexture));
-        
-        return new Bullet(getX(), getY() - bulletHeight, bulletWidth, bulletHeight, getBulletTexture());
-         }
+        Bullet bullet = new Bullet(getX() + 22, getY() + 25, bulletWidth, bulletHeight, getBulletTexture(), entityManager);
+        return bullet;
+    }
 
     public void hit() {
         health--;
     }
     
-    // abstract methods from ParentEntity
     @Override
-    public void update() { // to update Player entity
-    	SimulationLifecycleManagement simulationLifecycleManagement = new SimulationLifecycleManagement();
+    public void update() { 
         if (Gdx.input.isKeyPressed(Keys.LEFT)) {
             setX(getX() - getSpeed());
         }
@@ -110,9 +104,7 @@ public class Player extends ParentEntity {
     
 	@Override
 	public void render(SpriteBatch batch, float dt) { // to render Player entity
-		// batch.draw(getTexture(), getX(), getY(), getWidth() * getScale(), getHeight() * getScale());
 		batch.draw(getTexture(), getX(), getY(), getTextureWidth() * getScale(), getTextureHeight() * getScale());
-		// System.out.println("Here");
 	}
 	
 	@Override
@@ -121,8 +113,13 @@ public class Player extends ParentEntity {
 	}
 
 	@Override
-	public void handleCollision(ParentEntity entityA, ParentEntity entityB) {
-		
+	public void handleCollision(ParentEntity entityB) {
+		if (entityB.getEntityType().equals(Asteroid.class) && entityB instanceof Asteroid) {
+			hit();
+        }
+		if (entityB.getEntityType().equals(HealthPowerUp.class) && entityB instanceof HealthPowerUp) {
+			setHealth(getHealth() + 1);
+        }
 	}
 	
 }

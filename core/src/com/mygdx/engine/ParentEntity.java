@@ -93,7 +93,6 @@ public abstract class ParentEntity {
     public void setIsActive(boolean isActive) {
     	this.isActive = isActive;
     }
-    
    
     public Texture getTexture() {
         return texture;
@@ -107,14 +106,6 @@ public abstract class ParentEntity {
         return texture.getHeight(); // height = texture height size
     }
     
-    public abstract void handleCollision(ParentEntity entityA, ParentEntity entityB);
+    public abstract void handleCollision(ParentEntity entityB);
     
-    // concrete Parent entity methods 
-//    public boolean isOffScreen() {
-//    	if (getY() < 0 || getY() > Gdx.graphics.getHeight() || getX() < 0 || getX() > Gdx.graphics.getWidth()) {
-//    		return true;
-//    	}
-//    	
-//    	return false;
-//    }
 }

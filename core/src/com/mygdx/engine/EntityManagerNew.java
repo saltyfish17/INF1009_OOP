@@ -2,6 +2,7 @@ package com.mygdx.engine;
 
 import java.util.ArrayList;
 
+
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;
@@ -15,11 +16,10 @@ public class EntityManagerNew {
 	
 	public void addEntity(ParentEntity entity) {
 		entities.add(entity);
-	}
+	} 
 	
 	public void removeEntity(ParentEntity entity) {
 		entities.remove(entity);
-		// System.out.println("Removed:" + entity);
 	}
 	
 	public void updateAllEntities() {
@@ -29,10 +29,9 @@ public class EntityManagerNew {
 	}
 	
 	public void renderAllEntities(SpriteBatch batch, float dt) {
-		int i = 1;
 		for (ParentEntity entity : entities) {
 			entity.render(batch, dt);
-	}
+		}
 	}
 	
 	public List<ParentEntity> getAllEntities() {
@@ -45,48 +44,16 @@ public class EntityManagerNew {
 				return entity; // return entity with matching id
 			}
 		}
-		
 		return null; // return null if id not found
 	}
 	
-	public List<? extends ParentEntity> getEntitiesOfType(Class<? extends ParentEntity> entityType) {
-        List<? extends ParentEntity> entitiesOfType = new ArrayList<>();
-        for (ParentEntity entity : entities) {
-            if (entityType.isInstance(entity)) {
-                entitiesOfType.add(entity);
-            }
-        }
-        return entitiesOfType;
-    }
-	
-	public List<Asteroid> getAsteroidEntities() {
-		List<Asteroid> asteroids = new ArrayList<>();
-		for (ParentEntity entity : entities) {
-			if (entity.getEntityType().equals(Asteroid.class) && entity instanceof Asteroid) {
-				asteroids.add((Asteroid) entity);
-			}
-		}
-		
-		return asteroids;
+	public <T extends ParentEntity> List<T> getEntitiesByType(Class<T> entityType) {
+	    List<T> entitiesOfType = new ArrayList<>();
+	    for (ParentEntity entity : entities) {
+	        if (entityType.isInstance(entity)) {
+	            entitiesOfType.add(entityType.cast(entity));
+	        }
+	    }
+	    return entitiesOfType;
 	}
-	
-	public Player getPlayerEntity() {
-		for (ParentEntity entity : entities) {
-			if (entity.getEntityType().equals(Player.class) && entity instanceof Player) {
-				return (Player) entity;
-			}
-		}
-		return null;
-	}
-	
-	public List<Bullet> getBulletEntities() {
-		List<Bullet> bullets = new ArrayList<>();
-		for (ParentEntity entity : entities) {
-			if (entity.getEntityType().equals(Bullet.class) && entity instanceof Bullet) {
-				bullets.add((Bullet) entity);
-			}
-		}
-		return bullets;
-	}
-	
 }
