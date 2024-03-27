@@ -1,6 +1,7 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -16,17 +17,23 @@ public class Asteroid extends ParentEntity {
     private boolean isDestroyed;
     private int pointsPerAsteroid;
     private EntityManagerNew entityManager; 
+    private Sound explosionSound; // Sound for explosion
+    private float explosionVolume; // Volume for explosion sound
+
+
       //private Explosion explosion;
     //private Array<TextureRegion> explosionFrames;
     
     // constructors
-    public Asteroid(Texture texture, EntityManagerNew entityManager) {
+    public Asteroid(Texture texture, EntityManagerNew entityManager,float explosionVolume) {
     	super(MathUtils.random(0, Gdx.graphics.getWidth() - texture.getWidth() * ASTEROID_SCALE), // random START_X value
     			MathUtils.random(Gdx.graphics.getHeight(), Gdx.graphics.getHeight() * 2), // random START_Y value
     			50, 50, ASTEROID_SPEED, ASTEROID_SCALE, texture); // width, height, speed, scale, texture
     	this.isDestroyed = false;
     	this.pointsPerAsteroid = 100;
     	this.entityManager = entityManager;
+        this.explosionSound = Gdx.audio.newSound(Gdx.files.internal("explosion.mp3")); // Load explosion sound
+        this.explosionVolume = explosionVolume;
     	//this.explosion = new Explosion(explosionFrames, 0.1f, getX(), getY()); // Initialize the explosion
     }
     
@@ -73,11 +80,15 @@ public class Asteroid extends ParentEntity {
         if (entityB.getEntityType().equals(Bullet.class) && entityB instanceof Bullet) {
             entityManager.removeEntity(this);
             isDestroyed = true; // Mark asteroid as destroyed
+            explosionSound.play(explosionVolume); // Play explosion sound
+
             //explosion.trigger(getX(), getY());
          }
         if (entityB.getEntityType().equals(Player.class) && entityB instanceof Player) {
             entityManager.removeEntity(this); // Remove the asteroid itself
             isDestroyed = true; // Mark asteroid as destroyed
+            explosionSound.play(explosionVolume); // Play explosion sound
+
             //explosion.trigger(getX(), getY());
          }
     }

@@ -1,7 +1,9 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -18,9 +20,13 @@ public class GameplayScene implements GameScene {
     private Texture playerTexture, bulletTexture, asteroidTexture, heartTexture, healthPowerUpTexture;
     private OrthographicCamera camera;
     private Player player;
+    private Music bgMusic;
+    private Sound shootingSound;
+    private float volume;
     private EntityManagerNew entityManager;
     private ExplosionManager explosionManager;
-    
+    private boolean isSoundPaused = false;
+
     private int numAsteroids = 6;
     private float elapsedTime = 0;
     private float asteroidElapsedTime = 0;
@@ -41,6 +47,13 @@ public class GameplayScene implements GameScene {
         asteroidTexture = new Texture("asteroid.png");
         heartTexture = new Texture("heart.png");
         healthPowerUpTexture = new Texture("health_powerup.png");
+        
+        // Load the background music
+        bgMusic = Gdx.audio.newMusic(Gdx.files.internal("jupiter.mp3"));
+        bgMusic.setVolume(0.3f); // Adjust the volume level as needed
+        // Start playing the music and loop it
+        bgMusic.play();
+        bgMusic.setLooping(true);
 
         font = new BitmapFont();
 
@@ -49,19 +62,23 @@ public class GameplayScene implements GameScene {
         
         entityManager = new EntityManagerNew();
         
-        player = new Player(50, 50, playerTexture, bulletTexture, entityManager);
+        shootingSound = Gdx.audio.newSound(Gdx.files.internal("pew.mp3"));
+        
+        float volume = 0.3f;
+        
+        player = new Player(50,50,playerTexture, bulletTexture, entityManager, shootingSound, volume);
        
         player.setSceneManager(sceneManager);
         
         entityManager.addEntity(player); 
         
-        new InputOutputManagement(player, entityManager);
+        new InputOutputManagement();
 
-        Gdx.input.setInputProcessor(new InputOutputManagement(player, entityManager));
+        Gdx.input.setInputProcessor(new InputOutputManagement());
 
         for (int i = 0; i < numAsteroids; i++) {        	
         	// spawn new Asteroid
-            Asteroid asteroid = new Asteroid(asteroidTexture, entityManager);
+            Asteroid asteroid = new Asteroid(asteroidTexture, entityManager,0.5f);
             // add asteroid to entityManager
             entityManager.addEntity(asteroid); 
         }
@@ -116,7 +133,7 @@ public class GameplayScene implements GameScene {
         elapsedTime += Gdx.graphics.getDeltaTime();
         if (elapsedTime >= FALL_INTERVAL) {
         //    spawnAsteroid();
-        	Asteroid asteroid = new Asteroid(asteroidTexture, entityManager);
+        	Asteroid asteroid = new Asteroid(asteroidTexture, entityManager, 0.5f);
         	entityManager.addEntity(asteroid);
             elapsedTime -= FALL_INTERVAL; // Reset the timer
         }
@@ -147,6 +164,7 @@ public class GameplayScene implements GameScene {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             sceneManager.pushScene(new PauseMenuScene(sceneManager));
         }
+
     }
 
     @Override
@@ -158,5 +176,6 @@ public class GameplayScene implements GameScene {
         sceneManager.dispose();
         heartTexture.dispose();
         explosionManager.dispose();
+        bgMusic.dispose();
     }
 }
