@@ -12,7 +12,7 @@ public class Player extends ParentEntity {
     private static final int PLAYER_SPEED = 5;
     private static final int PLAYER_START_X = 200;
     private static final int PLAYER_START_Y = 50;
-    private static final int PLAYER_HEALTH = 5;
+    private static final int PLAYER_HEALTH = 15;
     private static final float PLAYER_SCALE = 0.3f;
 
     private Texture bulletTexture; // Add bulletTexture as a member variable

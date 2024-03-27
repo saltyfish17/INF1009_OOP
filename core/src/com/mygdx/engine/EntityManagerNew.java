@@ -13,6 +13,7 @@ import com.mygdx.game.Player;
 
 public class EntityManagerNew {
 	private List<ParentEntity> entities = new ArrayList<>();
+	private List<ParentEntity> removedEntities = new ArrayList<>();
 	
 	public void addEntity(ParentEntity entity) {
 		entities.add(entity);
@@ -20,6 +21,11 @@ public class EntityManagerNew {
 	
 	public void removeEntity(ParentEntity entity) {
 		entities.remove(entity);
+		removedEntities.add(entity);
+	}
+	
+	public void removeRemovedEntity(ParentEntity entity) {
+		removedEntities.remove(entity);
 	}
 	
 	public void updateAllEntities() {
@@ -36,6 +42,10 @@ public class EntityManagerNew {
 	
 	public List<ParentEntity> getAllEntities() {
 		return entities;
+	}
+	
+	public List<ParentEntity> getRemovedEntities() {
+		return removedEntities;
 	}
 	
 	public ParentEntity getEntityById(int id) {

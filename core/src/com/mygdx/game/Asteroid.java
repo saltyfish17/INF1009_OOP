@@ -3,17 +3,22 @@ package com.mygdx.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.mygdx.engine.EntityManagerNew;
 import com.mygdx.engine.ParentEntity;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.utils.Array;
 
 public class Asteroid extends ParentEntity {
-    private static final int ASTEROID_SPEED = 2;
-    private static final float ASTEROID_SCALE = 0.03f;
+    private static final int ASTEROID_SPEED = 4;
+    private static final float ASTEROID_SCALE = 0.04f;
     
     private boolean isDestroyed;
     private int pointsPerAsteroid;
     private EntityManagerNew entityManager; 
+      //private Explosion explosion;
+    //private Array<TextureRegion> explosionFrames;
+    
     // constructors
     public Asteroid(Texture texture, EntityManagerNew entityManager) {
     	super(MathUtils.random(0, Gdx.graphics.getWidth() - texture.getWidth() * ASTEROID_SCALE), // random START_X value
@@ -22,6 +27,7 @@ public class Asteroid extends ParentEntity {
     	this.isDestroyed = false;
     	this.pointsPerAsteroid = 100;
     	this.entityManager = entityManager;
+    	//this.explosion = new Explosion(explosionFrames, 0.1f, getX(), getY()); // Initialize the explosion
     }
     
     public Asteroid(float startX, float startY, float width, float height, Texture texture) {
@@ -63,13 +69,16 @@ public class Asteroid extends ParentEntity {
 
 	@Override
     public void handleCollision(ParentEntity entityB) {
+		//Explosion explosion = new Explosion(explosionFrames, 0.3f);
         if (entityB.getEntityType().equals(Bullet.class) && entityB instanceof Bullet) {
             entityManager.removeEntity(this);
             isDestroyed = true; // Mark asteroid as destroyed
+            //explosion.trigger(getX(), getY());
          }
         if (entityB.getEntityType().equals(Player.class) && entityB instanceof Player) {
             entityManager.removeEntity(this); // Remove the asteroid itself
             isDestroyed = true; // Mark asteroid as destroyed
+            //explosion.trigger(getX(), getY());
          }
     }
 }

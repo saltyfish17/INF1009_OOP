@@ -5,6 +5,8 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.mygdx.engine.*;
@@ -17,14 +19,15 @@ public class GameplayScene implements GameScene {
     private OrthographicCamera camera;
     private Player player;
     private EntityManagerNew entityManager;
-    private int numAsteroids = 10;
+    private ExplosionManager explosionManager;
+    
+    private int numAsteroids = 6;
     private float elapsedTime = 0;
     private float asteroidElapsedTime = 0;
     private static final float FALL_INTERVAL = 0.5f; // Adjust this interval as needed
     private boolean spaceKeyWasPressed = false;
     private float healthElapsedTime = 0;
     private static final float HEALTH_FALL_INTERVAL = 5f; // Adjust this interval as needed
-
 
     public GameplayScene(SceneManager sceneManager) {
         this.sceneManager = sceneManager;
@@ -50,10 +53,8 @@ public class GameplayScene implements GameScene {
        
         player.setSceneManager(sceneManager);
         
-        // add player to entityManager
         entityManager.addEntity(player); 
         
-        // InputOutputManagement handling Player and Bullet classes (player movement and shooting bullets)
         new InputOutputManagement(player, entityManager);
 
         Gdx.input.setInputProcessor(new InputOutputManagement(player, entityManager));
@@ -64,6 +65,9 @@ public class GameplayScene implements GameScene {
             // add asteroid to entityManager
             entityManager.addEntity(asteroid); 
         }
+    
+        explosionManager = new ExplosionManager();
+        explosionManager.createExplosionFrames();
     }
     
     @Override
@@ -87,7 +91,9 @@ public class GameplayScene implements GameScene {
 	        }
 	
 	        font.draw(batch, "Score: " + player.getScore(), 600, 500);
-
+	        
+	        explosionManager.renderExplosions(batch, 0.5f);
+	        
         batch.end();
 
         update(dt);
@@ -95,9 +101,11 @@ public class GameplayScene implements GameScene {
 
     @Override
     public void update(float dt) {
-        // Check for collisions
+        
         CollisionManagement collisionManagement = new CollisionManagement();
         collisionManagement.checkCollisions(entityManager);
+        
+        explosionManager.updateExplosions(entityManager);
         
         entityManager.updateAllEntities();
         
@@ -149,5 +157,6 @@ public class GameplayScene implements GameScene {
         asteroidTexture.dispose();
         sceneManager.dispose();
         heartTexture.dispose();
+        explosionManager.dispose();
     }
 }

@@ -12,7 +12,7 @@ import com.mygdx.engine.ParentEntity;
 
 public class HealthPowerUp extends ParentEntity {
 	private static final int HEALTH_POWERUP_SPEED = 3;
-	private static final float HEALTH_POWERUP_SCALE = 0.07f;
+	private static final float HEALTH_POWERUP_SCALE = 0.09f;
 	private EntityManagerNew entityManager; 
 
 	public HealthPowerUp(Texture texture, EntityManagerNew entityManager) {
