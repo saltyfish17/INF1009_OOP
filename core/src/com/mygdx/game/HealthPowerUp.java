@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+import com.mygdx.engine.AIControlManagement;
 import com.mygdx.engine.EntityManagerNew;
 import com.mygdx.engine.ParentEntity;
 
@@ -14,7 +15,7 @@ public class HealthPowerUp extends ParentEntity {
 	private static final float HEALTH_POWERUP_SCALE = 0.09f;
 	private EntityManagerNew entityManager; 
     private Sound collectSound; // Sound for collecting the power-up
-
+    private AIControlManagement aiControlManagement;
 
 	public HealthPowerUp(Texture texture, EntityManagerNew entityManager) {
 		super(MathUtils.random(0, Gdx.graphics.getWidth() - texture.getWidth() * HEALTH_POWERUP_SCALE), // random START_X value
@@ -22,6 +23,7 @@ public class HealthPowerUp extends ParentEntity {
     			20, 20, HEALTH_POWERUP_SPEED, HEALTH_POWERUP_SCALE, texture); // width, height, speed, scale, texture
 		this.entityManager = entityManager;
         this.collectSound = Gdx.audio.newSound(Gdx.files.internal("health.mp3")); // Load collect sound
+        this.aiControlManagement = new AIControlManagement();
 	}
 
 	public HealthPowerUp(float startX, float startY, float width, float height, Texture texture) {
@@ -30,7 +32,7 @@ public class HealthPowerUp extends ParentEntity {
 	
 	@Override
 	public void update() {
-		updateAI();
+		aiControlManagement.updateHealthPowerUp(this);
 	}
 
 	@Override
@@ -43,17 +45,6 @@ public class HealthPowerUp extends ParentEntity {
 		return HealthPowerUp.class;
 	}
 
-	public void updateAI() {
-		Random random = new Random();
-		// move down
-		setY(getY() - getSpeed());
-		// move left or right randomly
-		if (random.nextBoolean()) {
-			setX(getX() + getSpeed());
-		} else {
-			setX(getX() - getSpeed());
-		}
-	}
 
 	@Override
 	public void handleCollision(ParentEntity entityB) {
