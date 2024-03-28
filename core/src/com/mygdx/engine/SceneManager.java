@@ -2,48 +2,26 @@ package com.mygdx.engine;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import java.util.Stack;
+import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Screen;
 
 public class SceneManager {
-    private Stack<GameScene> scenes;
+    private Game game;
 
-    public SceneManager() {
-        scenes = new Stack<>();
+    public SceneManager(Game game) {
+        this.game = game;
     }
 
-    public void pushScene(GameScene scene) {
-        scenes.push(scene);
-        scene.create();
-    }
-
-    public void popScene() {
-        if (!scenes.isEmpty()) {
-            scenes.pop().dispose();
+    public void setScene(Screen screen) {
+        if (game.getScreen() != null) {
+            game.getScreen().dispose();
         }
+        game.setScreen(screen);
     }
 
-    public void setScene(GameScene scene) {
-        while (!scenes.isEmpty()) {
-            scenes.pop().dispose();
+    public void resize(int width, int height) {
+        if (game.getScreen() != null) {
+            game.getScreen().resize(width, height);
         }
-        scenes.push(scene);
-        scene.create();
-    }
-
-    public void update(float dt) {
-        scenes.peek().update(dt);
-    }
-
-    public void render(SpriteBatch batch) {
-        scenes.peek().render(batch);
-    }
-
-    public void dispose() {
-        if (!scenes.isEmpty()) {
-            scenes.peek().dispose();
-        }
-    }
-
-    public int getSceneCount() {
-        return scenes.size();
     }
 }

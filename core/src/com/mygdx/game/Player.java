@@ -1,18 +1,17 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.mygdx.engine.ParentEntity;
-import com.mygdx.engine.SceneManager;
-import com.mygdx.engine.EntityManagerNew;
+import com.mygdx.engine.*;
 
 public class Player extends ParentEntity {
     private static final int PLAYER_SPEED = 5;
     private static final int PLAYER_START_X = 200;
     private static final int PLAYER_START_Y = 50;
-    private static final int PLAYER_HEALTH = 15;
+    private static final int PLAYER_HEALTH = 3;
     private static final float PLAYER_SCALE = 0.3f;
 
     private Texture bulletTexture; // Add bulletTexture as a member variable
@@ -20,10 +19,9 @@ public class Player extends ParentEntity {
     private EntityManagerNew entityManager; 
     private int health;
     private int score;
+    private float volume;
+    private Sound shootingSound;
 
-    public void setSceneManager(SceneManager sceneManager) {
-        this.sceneManager = sceneManager;
-    }
     
     // constructors
     public Player(Texture texture, EntityManagerNew entityManager) {
@@ -42,14 +40,17 @@ public class Player extends ParentEntity {
     		this.score = 0;
     		this.entityManager = entityManager;
     }
-    
-    public Player(float width, float height, Texture texture, Texture bulletTexture, EntityManagerNew entityManager) {
-        super(PLAYER_START_X, PLAYER_START_Y, width, height, PLAYER_SPEED, PLAYER_SCALE, texture);
+
+    public Player(Texture playerTexture, Texture bulletTexture, EntityManagerNew entityManager, Sound shootingSound, float volume) {
+        super(PLAYER_START_X, PLAYER_START_Y, 0, 0, PLAYER_SPEED, PLAYER_SCALE, playerTexture);
         this.bulletTexture = bulletTexture; // Initialize bulletTexture
         this.health = PLAYER_HEALTH;
         this.score = 0;
         this.entityManager = entityManager;
+        this.shootingSound = shootingSound;
+        this.volume = volume;
     }
+
 
     public Texture getBulletTexture() {
 		return bulletTexture;
@@ -67,27 +68,34 @@ public class Player extends ParentEntity {
 		this.health = health;
 	}
 
-	public int getScore() {
-		return score;
-	}
-
-	public void setScore(int score) {
-		this.score = score;
-	}
+//	public int getScore() {
+//		return score;
+//	}
+//
+//	public void setScore(int score) {
+//		this.score = score;
+//	}
 
     public Bullet shoot() {
         float bulletWidth = 5; // Set the desired width of the bullet
         float bulletHeight = 10; // Set the desired height of the bullet
         Bullet bullet = new Bullet(getX() + 22, getY() + 25, bulletWidth, bulletHeight, getBulletTexture(), entityManager);
+        if (shootingSound != null) {
+            shootingSound.play(volume);
+        }
         return bullet;
     }
 
     public void hit() {
         health--;
     }
-    
+
+    public void setSceneManager(SceneManager sceneManager) {
+        this.sceneManager = sceneManager;
+    }
+
     @Override
-    public void update() { 
+    public void update() {
         if (Gdx.input.isKeyPressed(Keys.LEFT)) {
             setX(getX() - getSpeed());
         }
@@ -96,12 +104,10 @@ public class Player extends ParentEntity {
         }
         if (health <= 0) {
             // Check if sceneManager is initialized
-            if (sceneManager != null) {
-                sceneManager.setScene(new EndScene(sceneManager));
-            }
+            sceneManager.setScene(new GameOver(sceneManager));
         }
     }
-    
+
 	@Override
 	public void render(SpriteBatch batch, float dt) { // to render Player entity
 		batch.draw(getTexture(), getX(), getY(), getTextureWidth() * getScale(), getTextureHeight() * getScale());

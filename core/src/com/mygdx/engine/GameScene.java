@@ -7,4 +7,5 @@ public interface GameScene {
     void update(float dt);
     void render(SpriteBatch batch);
     void dispose();
+    void resize(int width, int height);
 }
