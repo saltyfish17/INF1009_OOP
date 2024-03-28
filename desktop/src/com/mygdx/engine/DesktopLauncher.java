@@ -9,7 +9,8 @@ public class DesktopLauncher {
 	public static void main (String[] arg) {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 		config.setForegroundFPS(60);
-		config.setTitle("GDXEngine");
+		config.setTitle("Space Defender (Team 04 - P9)");
+		config.setWindowIcon("windows_logo.png");
 		new Lwjgl3Application(new Spacedefender(), config);
 	}
 }
