@@ -13,7 +13,7 @@ public class Player extends ParentEntity {
     private static final int PLAYER_SPEED = 5;
     private static final int PLAYER_START_X = 200;
     private static final int PLAYER_START_Y = 50;
-    private static final int PLAYER_HEALTH = 15;
+    private static final int PLAYER_HEALTH = 3;
     private static final float PLAYER_SCALE = 0.3f;
 
     private Texture bulletTexture; // Add bulletTexture as a member variable
@@ -23,6 +23,16 @@ public class Player extends ParentEntity {
     private int score;
     private float volume;
     private Sound shootingSound;
+
+    public Player(Texture playerTexture, Texture bulletTexture, EntityManagerNew entityManager, Sound shootingSound, float volume) {
+        super(PLAYER_START_X, PLAYER_START_Y, 0, 0, PLAYER_SPEED, PLAYER_SCALE, playerTexture);
+        this.bulletTexture = bulletTexture; // Initialize bulletTexture
+        this.health = PLAYER_HEALTH;
+        this.score = 0;
+        this.entityManager = entityManager;
+        this.shootingSound = shootingSound;
+        this.volume = volume;
+    }
 
 
     public void setSceneManager(SceneManager sceneManager) {
@@ -107,7 +117,7 @@ public class Player extends ParentEntity {
         if (health <= 0) {
             // Check if sceneManager is initialized
             if (sceneManager != null) {
-                sceneManager.setScene(new EndScene(sceneManager));
+                sceneManager.setScene(new GameOverScene(sceneManager));
             }
         }
     }

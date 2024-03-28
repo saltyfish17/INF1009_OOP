@@ -3,8 +3,8 @@ package com.mygdx.game;
 import com.badlogic.gdx.graphics.Texture;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.mygdx.engine.ParentEntity;
-import com.mygdx.engine.EntityManagerNew;
+import com.mygdx.engine.*;
+
 
 public class Bullet extends ParentEntity {
     private static final int BULLET_SPEED = 10;
@@ -39,9 +39,7 @@ public class Bullet extends ParentEntity {
 		Player player = entityManager.getEntitiesByType(Player.class).stream().findFirst().orElse(null);
         if (entityB.getEntityType().equals(Asteroid.class) && entityB instanceof Asteroid) {
 			entityManager.removeEntity(this);
-	        if (player != null) {
-                player.setScore(player.getScore() + 100);
-            }
+			ScoreManager.addScore(100);
 	    }
 	}
 }

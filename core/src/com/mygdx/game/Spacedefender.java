@@ -8,7 +8,6 @@ import com.mygdx.engine.SceneManager;
 public class Spacedefender extends ApplicationAdapter {
     private SpriteBatch batch;
     private SceneManager sceneManager;
-
     @Override
     public void create() {
         batch = new SpriteBatch();
