@@ -42,7 +42,7 @@ public class JupiterScene implements GameScene {
         shootingSound = Gdx.audio.newSound(Gdx.files.internal("pew.mp3"));
         passed = Gdx.audio.newSound(Gdx.files.internal("passed.mp3"));
 
-        bgMusic = Gdx.audio.newMusic(Gdx.files.internal("jupiter.mp3"));
+        bgMusic = Gdx.audio.newMusic(Gdx.files.internal("Thunder.mp3"));
         bgMusic.setLooping(true);
         bgMusic.setVolume(0.3f);
         bgMusic.play();

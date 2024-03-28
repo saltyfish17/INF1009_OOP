@@ -41,7 +41,7 @@ public class NeptuneScene implements GameScene {
 
         shootingSound = Gdx.audio.newSound(Gdx.files.internal("pew.mp3"));
 
-        bgMusic = Gdx.audio.newMusic(Gdx.files.internal("jupiter.mp3"));
+        bgMusic = Gdx.audio.newMusic(Gdx.files.internal("Wind_neptune.mp3"));
         bgMusic.setLooping(true);
         bgMusic.setVolume(0.3f);
         bgMusic.play();
