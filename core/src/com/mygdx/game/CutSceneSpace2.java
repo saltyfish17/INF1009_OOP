@@ -67,7 +67,7 @@ public class CutSceneSpace2 implements GameScene {
             Timer.schedule(new Timer.Task() {
                 @Override
                 public void run() {
-                    sceneManager.setScene(new CutSceneNeptune(sceneManager));
+                    sceneManager.setScene(new SpaceScene2(sceneManager));
                 }
             }, 2); // Delay in seconds, e.g., 2 seconds
         }
