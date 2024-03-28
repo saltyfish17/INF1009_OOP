@@ -6,7 +6,7 @@ import com.mygdx.game.HealthPowerUp;
 
 public class AIControlManagement {
     private static final int HEALTH_POWERUP_SPEED = 3;
-  
+
 
     public void updateHealthPowerUp(HealthPowerUp healthPowerUp) {
         // Move the health power-up downward
