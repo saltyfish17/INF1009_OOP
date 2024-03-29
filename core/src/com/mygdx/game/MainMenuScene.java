@@ -20,39 +20,16 @@ public class MainMenuScene implements GameScene {
     private SpriteBatch batch;
     private BitmapFont font;
     private String[] menuItems = {"Start", "Level Select", "Credits", "Quit"};
-    private String[] debugItems = {"Earth Scene", "Space Scene (Infinite Mode)", "Jupiter Scene", "Neptune Scene"};
     private int currentSelection = 0;
     private Texture logo, background;
     private Music bgMusic;
     private Sound selectSound;
     private Sound chooseSound;
     private boolean debugMenuVisible;
-    boolean delayInput = false;
 
     public MainMenuScene(SceneManager sceneManager) {
         this.sceneManager = sceneManager;
         debugMenuVisible = false;
-    }
-
-
-    private void toggleDebugMenu() {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.F5)) {
-            debugMenuVisible = !debugMenuVisible;
-            currentSelection = 0; // Reset selection when switching menus
-        }
-    }
-    private void handleDebugMenuInput() {
-        if (debugMenuVisible) {
-            if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
-                chooseSound.play(0.3f);
-                currentSelection = (currentSelection - 1 + debugItems.length) % debugItems.length;
-            } else if (Gdx.input.isKeyJustPressed(Input.Keys.DOWN)) {
-                chooseSound.play(0.3f);
-                currentSelection = (currentSelection + 1) % debugItems.length;
-            } else if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
-                selectDebugOption();
-            }
-        }
     }
 
     private void handleMainMenuInput() {
@@ -69,28 +46,7 @@ public class MainMenuScene implements GameScene {
         }
     }
 
-    private void selectDebugOption() {
-        selectSound.play(1);
-        switch (currentSelection) {
-            case 0: // Start
-                ScoreManager.resetScore();
-                sceneManager.setScene(new EarthScene(sceneManager));
-                break;
-            case 1:
-                ScoreManager.resetScore();
-                sceneManager.setScene(new SpaceSceneInfinite(sceneManager));
-                break;
-            case 2:
-                ScoreManager.resetScore();
-                sceneManager.setScene(new JupiterScene(sceneManager));
-                break;
-            case 3:
-                sceneManager.setScene(new NeptuneScene(sceneManager));
-                break;
-        }
-    }
-
-    private void selectMainMenuOption() {
+      private void selectMainMenuOption() {
         selectSound.play(1);
         switch (currentSelection) {
             case 0: // Start
@@ -122,17 +78,6 @@ public class MainMenuScene implements GameScene {
         }
     }
 
-    private void renderDebugMenu(SpriteBatch batch) {
-        for (int i = 0; i < debugItems.length; i++) {
-            if (i == currentSelection) {
-                font.setColor(Color.RED);
-            } else {
-                font.setColor(Color.WHITE);
-            }
-            font.draw(batch, debugItems[i], 100, 200 - 30 * i);
-        }
-    }
-
     @Override
     public void create() {
         font = new BitmapFont();
@@ -155,9 +100,7 @@ public class MainMenuScene implements GameScene {
 
     @Override
     public void update(float dt) {
-        toggleDebugMenu();
         handleMainMenuInput();
-        handleDebugMenuInput();
     }
 
     @Override
@@ -172,11 +115,8 @@ public class MainMenuScene implements GameScene {
         batch.draw(background,0,0);
         batch.draw(logo, 180,180,logoWidth,logoHeight);
 
-        if (debugMenuVisible) {
-            renderDebugMenu(batch);
-        } else {
-            renderMainMenu(batch);
-        }
+        renderMainMenu(batch);
+
         batch.end();
     }
     @Override
