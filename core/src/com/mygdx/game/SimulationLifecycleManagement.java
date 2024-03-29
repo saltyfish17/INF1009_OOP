@@ -21,6 +21,9 @@ public class SimulationLifecycleManagement {
     private boolean spaceKeyWasPressed = false;
     private int numAsteroids = 6;
 
+    float GAME_WIDTH = Gdx.graphics.getWidth();
+    float GAME_HEIGHT = Gdx.graphics.getHeight();
+
     public SimulationLifecycleManagement(Texture playerTexture, Texture bulletTexture, Texture asteroidTexture,
                                          Texture heartTexture, Texture healthPowerUpTexture, Sound shootingSound,
                                          float volume, SceneManager sceneManager) {
@@ -53,6 +56,8 @@ public class SimulationLifecycleManagement {
         collisionManagement.checkCollisions(entityManager);
         explosionManager.updateExplosions(entityManager);
         entityManager.updateAllEntities();
+
+        checkPlayerBounds(player);
 
     }
 
@@ -94,6 +99,30 @@ public class SimulationLifecycleManagement {
                     heartIconWidth, heartIconHeight);
         }
     }
+
+    private void checkPlayerBounds(Player player) {
+        float playerWidth = player.getTextureWidth() * player.getScale();
+        float playerHeight = player.getTextureHeight() * player.getScale();
+
+        // Check left boundary
+        if (player.getX() < 0) {
+            player.setX(0);
+        }
+        // Check right boundary
+        else if (player.getX() + playerWidth > GAME_WIDTH) {
+            player.setX(GAME_WIDTH - playerWidth);
+        }
+
+        // Check bottom boundary
+        if (player.getY() < 0) {
+            player.setY(0);
+        }
+        // Check top boundary
+        else if (player.getY() + playerHeight > GAME_HEIGHT) {
+            player.setY(GAME_HEIGHT - playerHeight);
+        }
+    }
+
     public void dispose() {
         asteroidTexture.dispose();
         heartTexture.dispose();
