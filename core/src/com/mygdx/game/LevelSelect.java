@@ -111,6 +111,9 @@ public class LevelSelect implements GameScene {
 
         renderMainMenu(batch);
 
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            sceneManager.popScene();
+        }
         batch.end();
     }
     @Override
