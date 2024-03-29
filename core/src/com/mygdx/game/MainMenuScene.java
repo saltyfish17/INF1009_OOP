@@ -20,7 +20,7 @@ public class MainMenuScene implements GameScene {
     private SpriteBatch batch;
     private BitmapFont font;
     private String[] menuItems = {"Start", "Level Select", "Credits", "Quit"};
-    private String[] debugItems = {"Earth Scene", "Space Scene", "Jupiter Scene", "Neptune Scene"};
+    private String[] debugItems = {"Earth Scene", "Space Scene (Infinite Mode)", "Jupiter Scene", "Neptune Scene"};
     private int currentSelection = 0;
     private Texture logo, background;
     private Music bgMusic;
