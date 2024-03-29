@@ -22,7 +22,6 @@ public class SpaceSceneInfinite implements GameScene {
     private Music bgMusic;
     private Sound shootingSound;
     private boolean isPaused;
-    private float elapsedTime = 0;
 
     public SpaceSceneInfinite(SceneManager sceneManager) {
         this.sceneManager = sceneManager;
@@ -92,9 +91,6 @@ public class SpaceSceneInfinite implements GameScene {
         }
         else {
             font.draw(batch,"Score:" + ScoreManager.getScore() , 460, 430);
-            float remainingTime = 20 - elapsedTime; // Calculate remaining time
-            String timeString = String.format("%.0f", remainingTime);
-            font.draw(batch, "Time: " + timeString, 460, 420); // Display the countdown
         }
         batch.end();
     }
