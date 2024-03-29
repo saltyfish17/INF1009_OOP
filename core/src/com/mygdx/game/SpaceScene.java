@@ -60,10 +60,10 @@ public class SpaceScene implements GameScene {
             simulation.update(dt);
             elapsedTime += dt;
 
-            if (elapsedTime >= 20) { // Check if 45 seconds have elapsed
+            if (elapsedTime >= 20) { // Check if time in seconds have elapsed
                 elapsedTime = 0; // Reset the timer if needed
                 // Transition to the next scene
-                sceneManager.setScene(new CutSceneJupiter(sceneManager)); // Replace 'NextScene' with your actual scene class
+                sceneManager.setScene(new CutSceneJupiter(sceneManager));
             }
         }
     }
