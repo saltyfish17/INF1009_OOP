@@ -67,7 +67,7 @@ public class CutSceneNeptune implements GameScene {
             Timer.schedule(new Timer.Task() {
                 @Override
                 public void run() {
-                    sceneManager.setScene(new JupiterScene(sceneManager));
+                    sceneManager.setScene(new NeptuneScene(sceneManager));
                 }
             }, 2); // Delay in seconds, e.g., 2 seconds
         }
