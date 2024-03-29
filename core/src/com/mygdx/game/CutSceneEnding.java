@@ -50,6 +50,7 @@ public class CutSceneEnding implements GameScene {
 
         bgMusic = Gdx.audio.newMusic(Gdx.files.internal("ending.mp3"));
         bgMusic.setLooping(false);
+        bgMusic.setVolume(0.3f)
         bgMusic.play();
 
         startTextAnimation();
