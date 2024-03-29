@@ -76,15 +76,15 @@ public class MainMenuScene implements GameScene {
                 ScoreManager.resetScore();
                 sceneManager.setScene(new EarthScene(sceneManager));
                 break;
-            case 1: // Credits
+            case 1:
                 ScoreManager.resetScore();
-                sceneManager.setScene(new SpaceScene(sceneManager));
+                sceneManager.setScene(new SpaceSceneInfinite(sceneManager));
                 break;
-            case 2: // Quit
+            case 2:
                 ScoreManager.resetScore();
                 sceneManager.setScene(new JupiterScene(sceneManager));
                 break;
-            case 3: // Quit
+            case 3:
                 sceneManager.setScene(new NeptuneScene(sceneManager));
                 break;
         }
