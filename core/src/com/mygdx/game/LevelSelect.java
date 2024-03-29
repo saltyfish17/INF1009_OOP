@@ -17,7 +17,7 @@ public class LevelSelect implements GameScene {
     private SceneManager sceneManager;
     private SpriteBatch batch;
     private BitmapFont font;
-    private String[] menuItems = {"Earth", "Jupiter", "Neptune", "Space", "BACK"};
+    private String[] menuItems = {"Earth", "Jupiter", "Neptune", "Space (Infinite Mode)", "BACK"};
     private int currentSelection = 0;
     private Texture logo, background;
     private Sound selectSound;
