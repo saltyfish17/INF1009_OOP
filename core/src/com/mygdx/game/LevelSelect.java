@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.engine.GameScene;
 import com.mygdx.engine.SceneManager;
+import com.mygdx.engine.ScoreManager;
 
 public class LevelSelect implements GameScene {
     private SceneManager sceneManager;
@@ -47,18 +48,23 @@ public class LevelSelect implements GameScene {
         selectSound.play(1);
         switch (currentSelection) {
             case 0:
+                ScoreManager.resetScore();
                 sceneManager.setScene(new EarthScene(sceneManager));
                 break;
             case 1:
+                ScoreManager.resetScore();
                 sceneManager.setScene(new JupiterScene(sceneManager));
                 break;
             case 2:
+                ScoreManager.resetScore();
                 sceneManager.setScene(new NeptuneScene(sceneManager));
                 break;
             case 3:
+                ScoreManager.resetScore();
                 sceneManager.setScene(new SpaceScene2(sceneManager));
                 break;
             case 4:
+                ScoreManager.resetScore();
                 sceneManager.popScene();
                 break;
         }
@@ -114,6 +120,7 @@ public class LevelSelect implements GameScene {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             sceneManager.popScene();
         }
+
         batch.end();
     }
     @Override

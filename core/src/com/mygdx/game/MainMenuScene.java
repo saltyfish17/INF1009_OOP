@@ -11,6 +11,7 @@ import com.mygdx.engine.SceneManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.mygdx.engine.ScoreManager;
 
 import java.util.Arrays;
 
@@ -72,12 +73,15 @@ public class MainMenuScene implements GameScene {
         selectSound.play(1);
         switch (currentSelection) {
             case 0: // Start
+                ScoreManager.resetScore();
                 sceneManager.setScene(new EarthScene(sceneManager));
                 break;
             case 1: // Credits
+                ScoreManager.resetScore();
                 sceneManager.setScene(new SpaceScene(sceneManager));
                 break;
             case 2: // Quit
+                ScoreManager.resetScore();
                 sceneManager.setScene(new JupiterScene(sceneManager));
                 break;
             case 3: // Quit
@@ -90,12 +94,15 @@ public class MainMenuScene implements GameScene {
         selectSound.play(1);
         switch (currentSelection) {
             case 0: // Start
+                ScoreManager.resetScore();
                 sceneManager.setScene(new CutSceneEarth(sceneManager));
                 break;
             case 1: // Level Select
+                ScoreManager.resetScore();
                 sceneManager.pushScene(new LevelSelect(sceneManager));
                 break;
             case 2: // Credit
+                ScoreManager.resetScore();
                 sceneManager.pushScene(new CreditScene(sceneManager));
                 break;
             case 3: // Quit
@@ -170,7 +177,6 @@ public class MainMenuScene implements GameScene {
         } else {
             renderMainMenu(batch);
         }
-
         batch.end();
     }
     @Override
