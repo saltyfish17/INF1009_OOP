@@ -6,16 +6,14 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.mygdx.engine.*;
-import com.mygdx.game.Bullet.BulletType;
 
 public class Drone extends ParentEntity {
-	private static final int DRONE_SPEED = 2;
+	private static final int DRONE_SPEED = 3;
 	private static final float DRONE_SCALE= 0.15f;
     private static final int DRONE_START_Y = 500;
     private static final float DRONE_SHOT_INTERVAL = 3f;
     
     private boolean isDestroyed;
-    private boolean moveRight;
     private int pointsPerDrone;
     private Texture bulletTex;
     private GameEntityManager entityManager;
@@ -26,13 +24,10 @@ public class Drone extends ParentEntity {
     private float explosionVolume; // Volume for explosion sound
     private float shotInterval;
     private float shotTimer;
-    private float randMoveTimer;
-    private float randMoveDuration;
 
 	public Drone(float startX, Texture tex, Texture bulletTex, GameEntityManager entityManager, Sound shootingSound, float shootingVolume, float explosionVolume) {
 		super(startX, DRONE_START_Y, 0, 0, DRONE_SPEED, DRONE_SCALE, tex);
 		this.setDestroyed(false);
-		this.moveRight = true;
     	this.setPointsPerDrone(200);
     	this.entityManager = entityManager;
     	this.bulletFactory = new BulletFactory(bulletTex, entityManager, getId());
@@ -43,9 +38,6 @@ public class Drone extends ParentEntity {
         this.shootingVolume = shootingVolume;
         this.shotInterval = DRONE_SHOT_INTERVAL;
         this.shotTimer = 0;
-        this.randMoveTimer = 0f;
-        this.randMoveDuration = MathUtils.random(3f, 7f);
-        setVelocityX(DRONE_SPEED);
 	}
 
 	public boolean isDestroyed() {
@@ -137,30 +129,6 @@ public class Drone extends ParentEntity {
 	}
 
 
-	public boolean isMoveRight() {
-		return moveRight;
-	}
-
-	public void setMoveRight(boolean moveRight) {
-		this.moveRight = moveRight;
-	}
-
-	public float getRandMoveDuration() {
-		return randMoveDuration;
-	}
-
-	public void setRandMoveDuration(float randMoveDuration) {
-		this.randMoveDuration = randMoveDuration;
-	}
-
-	public float getRandMoveTimer() {
-		return randMoveTimer;
-	}
-
-	public void setRandMoveTimer(float randMoveTimer) {
-		this.randMoveTimer = randMoveTimer;
-	}
-
 	public void shoot() {
         bulletFactory.createEntity(1);
         if (shootingSound != null) {
@@ -170,28 +138,9 @@ public class Drone extends ParentEntity {
 
 	@Override
 	public void update(float dt) {
-		setY(getY() - getVelocityY());
-		if (getY() <= 350) {
-			// descend until certain height
-			setVelocityY(0);
+		if (getY() > 350) {
+			setY(getY() - getSpeed());	
 		}
-		
-		setRandMoveTimer(getRandMoveTimer() + dt);
-		if (getX() < 0 && !isMoveRight()) {
-			setMoveRight(true);
-		} else if (getX() > 600 && isMoveRight()) {
-			setMoveRight(false);
-		}
-		if (getRandMoveTimer() < getRandMoveDuration()) {
-			// if within boundary, move on x axis
-			setX(getX() + (moveRight ? getVelocityX():-getVelocityX()));
-		} else {
-			// switch directions if exceed time limit
-			setMoveRight(!isMoveRight());
-			setRandMoveDuration(MathUtils.random(3f, 7f));
-			setRandMoveTimer(0);
-		}
-		
 		shotTimer += dt;
 		if (shotTimer >= shotInterval) {
 			shoot();
@@ -212,23 +161,14 @@ public class Drone extends ParentEntity {
 	@Override
 	public void handleCollision(ParentEntity entityB) {
 		//Explosion explosion = new Explosion(explosionFrames, 0.3f);
-		if (entityB.getEntityType().equals(Bullet.class) && entityB instanceof Bullet) {
-			if (((Bullet) entityB).getBulletType() == BulletType.PLAYER) {
-				entityManager.removeEntity(this);
-				setDestroyed(true);
-				explosionSound.play(explosionVolume);
-			}
-		}
-        if (entityB.getEntityType().equals(BlackHole.class) && entityB instanceof BlackHole) {
-    		entityManager.removeEntity(this);
-            setDestroyed(true); // Mark drone as destroyed
+        if (entityB.getEntityType().equals(Bullet.class) && entityB instanceof Bullet) {
+            entityManager.removeEntity(this);
+            setDestroyed(true); // Mark asteroid as destroyed
             explosionSound.play(explosionVolume); // Play explosion sound
+
             //explosion.trigger(getX(), getY());
          }
-        if (entityB.getEntityType().equals(Drone.class) && entityB instanceof Drone) {
-        	System.out.println("Drone collision");
-        	setMoveRight(!isMoveRight());
-        }
+            //explosion.trigger(getX(), getY());
 	}
 }
 
