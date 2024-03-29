@@ -64,7 +64,7 @@ public class SpaceScene2 implements GameScene {
             if (elapsedTime >= 35) { // Check if 45 seconds have elapsed
                 elapsedTime = 0; // Reset the timer if needed
                 // Transition to the next scene
-                sceneManager.setScene(new CutSceneNeptune(sceneManager)); // Replace 'NextScene' with your actual scene class
+                sceneManager.setScene(new CutSceneNeptune(sceneManager));
             }
         }
     }
