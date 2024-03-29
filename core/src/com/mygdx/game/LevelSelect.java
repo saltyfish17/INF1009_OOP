@@ -2,22 +2,21 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.mygdx.engine.GameScene;
+import com.mygdx.engine.iGameScene;
 import com.mygdx.engine.SceneManager;
 import com.mygdx.engine.ScoreManager;
 
-public class LevelSelect implements GameScene {
+public class LevelSelect implements iGameScene {
     private SceneManager sceneManager;
     private SpriteBatch batch;
     private BitmapFont font;
-    private String[] menuItems = {"Earth", "Jupiter", "Neptune", "Space (Infinite Mode)", "BACK"};
+    private String[] menuItems = {"Earth", "Jupiter", "Neptune", "Infinite Space", "BACK"};
     private int currentSelection = 0;
     private Texture logo, background;
     private Sound selectSound;
@@ -61,7 +60,7 @@ public class LevelSelect implements GameScene {
                 break;
             case 3:
                 ScoreManager.resetScore();
-                sceneManager.setScene(new SpaceScene2(sceneManager));
+                sceneManager.setScene(new InfiniteSpaceScene(sceneManager));
                 break;
             case 4:
                 ScoreManager.resetScore();

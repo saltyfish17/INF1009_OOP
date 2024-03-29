@@ -8,15 +8,17 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.mygdx.engine.*;
-import com.badlogic.gdx.utils.Timer;
+import com.mygdx.engine.SimulationLifecycleManagement;
+import com.mygdx.engine.iGameScene;
+import com.mygdx.engine.SceneManager;
+import com.mygdx.engine.ScoreManager;
 
-public class SpaceScene implements GameScene {
+public class SpaceScene implements iGameScene {
     private SimulationLifecycleManagement simulation;
     private SceneManager sceneManager;
     private BitmapFont font;
     private SpriteBatch batch;
-    private Texture playerTexture, bulletTexture, asteroidTexture, heartTexture, healthPowerUpTexture, backgroundTexture;
+    private Texture playerTexture, bulletTexture, asteroidTexture, heartTexture, healthPowerUpTexture, droneTexture, blackHoleTexture, backgroundTexture;
     private Music bgMusic;
     private Sound shootingSound;
     private boolean isPaused;
@@ -36,6 +38,8 @@ public class SpaceScene implements GameScene {
         asteroidTexture = new Texture("asteroid.png");
         heartTexture = new Texture("heart.png");
         healthPowerUpTexture = new Texture("health_powerup.png");
+        droneTexture = new Texture("drone.png");
+        blackHoleTexture = new Texture("blackhole.png");
         backgroundTexture = new Texture("space_bg.png");
 
         font = new BitmapFont();
@@ -49,7 +53,7 @@ public class SpaceScene implements GameScene {
 
         float volume = 0.3f;
         simulation = new SimulationLifecycleManagement(playerTexture, bulletTexture, asteroidTexture,
-                heartTexture, healthPowerUpTexture,
+                heartTexture, healthPowerUpTexture, droneTexture, blackHoleTexture,
                 shootingSound, volume, sceneManager);
 
     }
@@ -115,6 +119,8 @@ public class SpaceScene implements GameScene {
         heartTexture.dispose();
         bulletTexture.dispose();
         asteroidTexture.dispose();
+        droneTexture.dispose();
+        blackHoleTexture.dispose();
         heartTexture.dispose();
         healthPowerUpTexture.dispose();
         backgroundTexture.dispose();

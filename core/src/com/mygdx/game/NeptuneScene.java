@@ -8,16 +8,17 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.mygdx.engine.GameScene;
+import com.mygdx.engine.SimulationLifecycleManagement;
+import com.mygdx.engine.iGameScene;
 import com.mygdx.engine.SceneManager;
 import com.mygdx.engine.ScoreManager;
 
-public class NeptuneScene implements GameScene {
+public class NeptuneScene implements iGameScene {
     private SimulationLifecycleManagement simulation;
     private SceneManager sceneManager;
     private BitmapFont font;
     private SpriteBatch batch;
-    private Texture playerTexture, bulletTexture, asteroidTexture, heartTexture, healthPowerUpTexture, backgroundTexture;
+    private Texture playerTexture, bulletTexture, asteroidTexture, heartTexture, healthPowerUpTexture, backgroundTexture, droneTexture, blackHoleTexture;
     private Music bgMusic;
     private Sound shootingSound;
     private boolean isPaused;
@@ -35,6 +36,8 @@ public class NeptuneScene implements GameScene {
         asteroidTexture = new Texture("asteroid.png");
         heartTexture = new Texture("heart.png");
         healthPowerUpTexture = new Texture("health_powerup.png");
+        droneTexture = new Texture("drone.png");
+        blackHoleTexture = new Texture("blackhole.png");
         backgroundTexture = new Texture("neptune_bg.png");
 
         font = new BitmapFont();
@@ -48,7 +51,7 @@ public class NeptuneScene implements GameScene {
 
         float volume = 0.3f;
         simulation = new SimulationLifecycleManagement(playerTexture, bulletTexture, asteroidTexture,
-                heartTexture, healthPowerUpTexture,
+                heartTexture, healthPowerUpTexture, droneTexture, blackHoleTexture,
                 shootingSound, volume, sceneManager);
 
     }
@@ -57,7 +60,7 @@ public class NeptuneScene implements GameScene {
         if (!isPaused) {
             simulation.update(dt);
         }
-        if (ScoreManager.getScore() >= 13000) {
+        if (ScoreManager.getScore() >= 25000) {
             sceneManager.setScene(new CutSceneEnding(sceneManager));
         }
     }
@@ -109,6 +112,7 @@ public class NeptuneScene implements GameScene {
         heartTexture.dispose();
         healthPowerUpTexture.dispose();
         backgroundTexture.dispose();
+        droneTexture.dispose();
         bgMusic.dispose();
         simulation.dispose();
         sceneManager.dispose();

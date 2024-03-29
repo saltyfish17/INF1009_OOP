@@ -7,29 +7,30 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.engine.ParentEntity;
 import com.mygdx.engine.SceneManager;
-import com.mygdx.engine.EntityManagerNew;
 
 public class Player extends ParentEntity {
     private static final int PLAYER_SPEED = 5;
     private static final int PLAYER_START_X = 200;
     private static final int PLAYER_START_Y = 50;
-    private static final int PLAYER_HEALTH = 3;
+    private static final int PLAYER_HEALTH = 5;
     private static final float PLAYER_SCALE = 0.3f;
 
     private Texture bulletTexture; // Add bulletTexture as a member variable
     private SceneManager sceneManager;
-    private EntityManagerNew entityManager; 
+    private GameEntityManager entityManager; 
+    private BulletFactory bulletFactory;
     private int health;
     private int score;
     private float volume;
     private Sound shootingSound;
 
-    public Player(Texture playerTexture, Texture bulletTexture, EntityManagerNew entityManager, Sound shootingSound, float volume) {
+    public Player(Texture playerTexture, Texture bulletTexture, GameEntityManager entityManager, Sound shootingSound, float volume) {
         super(PLAYER_START_X, PLAYER_START_Y, 0, 0, PLAYER_SPEED, PLAYER_SCALE, playerTexture);
         this.bulletTexture = bulletTexture; // Initialize bulletTexture
         this.health = PLAYER_HEALTH;
         this.score = 0;
         this.entityManager = entityManager;
+        this.bulletFactory = new BulletFactory(bulletTexture, entityManager, getId());
         this.shootingSound = shootingSound;
         this.volume = volume;
     }
@@ -40,7 +41,7 @@ public class Player extends ParentEntity {
     }
     
     // constructors
-    public Player(Texture texture, EntityManagerNew entityManager) {
+    public Player(Texture texture, GameEntityManager entityManager) {
     	super(PLAYER_START_X, PLAYER_START_Y, 0, 0, PLAYER_SPEED, PLAYER_SCALE, texture); {
     		this.bulletTexture = null;
     		this.health = PLAYER_HEALTH;
@@ -49,7 +50,7 @@ public class Player extends ParentEntity {
     	}
     }
     
-    public Player(Texture playerTexture, Texture bulletTexture, EntityManagerNew entityManager) {
+    public Player(Texture playerTexture, Texture bulletTexture, GameEntityManager entityManager) {
     	super(PLAYER_START_X, PLAYER_START_Y, 0, 0, PLAYER_SPEED, PLAYER_SCALE, playerTexture); 
     		this.bulletTexture = bulletTexture;
     		this.health = PLAYER_HEALTH;
@@ -57,7 +58,7 @@ public class Player extends ParentEntity {
     		this.entityManager = entityManager;
     }
     
-    public Player(float width, float height, Texture texture, Texture bulletTexture, EntityManagerNew entityManager, Sound shootingSound, float volume) {
+    public Player(float width, float height, Texture texture, Texture bulletTexture, GameEntityManager entityManager, Sound shootingSound, float volume) {
         super(PLAYER_START_X, PLAYER_START_Y, width, height, PLAYER_SPEED, PLAYER_SCALE, texture);
         this.bulletTexture = bulletTexture; // Initialize bulletTexture
         this.health = PLAYER_HEALTH;
@@ -66,15 +67,6 @@ public class Player extends ParentEntity {
         this.shootingSound = shootingSound;
         this.volume = volume;
     }
-    
-
-    public Texture getBulletTexture() {
-		return bulletTexture;
-	}
-
-	public void setBulletTexture(Texture bulletTexture) {
-		this.bulletTexture = bulletTexture;
-	}
 
     public int getHealth() {
         return health;
@@ -84,22 +76,12 @@ public class Player extends ParentEntity {
 		this.health = health;
 	}
 
-	public int getScore() {
-		return score;
-	}
-
-	public void setScore(int score) {
-		this.score = score;
-	}
-
-    public Bullet shoot() {
-        float bulletWidth = 5; // Set the desired width of the bullet
-        float bulletHeight = 10; // Set the desired height of the bullet
-        Bullet bullet = new Bullet(getX() + 22, getY() + 25, bulletWidth, bulletHeight, getBulletTexture(), entityManager);
+    public void shoot() {
+        bulletFactory.createEntity(1);
         if (shootingSound != null) {
             shootingSound.play(volume);
         }
-        return bullet;
+        System.out.println("Player shot");
     }
 
     public void hit() {
@@ -107,12 +89,18 @@ public class Player extends ParentEntity {
     }
     
     @Override
-    public void update() { 
+    public void update(float dt) { 
         if (Gdx.input.isKeyPressed(Keys.LEFT)) {
             setX(getX() - getSpeed());
+            if (getX() == -50) {
+            	setX(650);
+            }
         }
         if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
             setX(getX() + getSpeed());
+            if (getX() == 650) {
+            	setX(-50);
+            }
         }
         if (health <= 0) {
             // Check if sceneManager is initialized

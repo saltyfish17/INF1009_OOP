@@ -6,10 +6,10 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Timer;
-import com.mygdx.engine.GameScene;
+import com.mygdx.engine.iGameScene;
 import com.mygdx.engine.SceneManager;
 
-public class CutSceneEnding implements GameScene {
+public class CutSceneEnding implements iGameScene {
     private SceneManager sceneManager;
     private BitmapFont font;
     private String fullText1 = "Neptune is also hostile, in fact, everything in space is hostile.\nOnly Earth has habitable climate for atmosphere and life.\n Due to climate change in the year 3034, it's very inhospitable.\nYou keep pressing forward in space hoping to find life...\n\nTHE END";
@@ -68,7 +68,7 @@ public class CutSceneEnding implements GameScene {
             Timer.schedule(new Timer.Task() {
                 @Override
                 public void run() {
-                    sceneManager.setScene(new MainMenuScene(sceneManager));
+                    sceneManager.setScene(new InfiniteSpaceScene(sceneManager));
                 }
             }, 2); // Delay in seconds, e.g., 2 seconds
         }

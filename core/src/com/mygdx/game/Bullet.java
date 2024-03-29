@@ -5,22 +5,36 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.engine.*;
 
-
 public class Bullet extends ParentEntity {
-    private static final int BULLET_SPEED = 10;
-    private static final float BULLET_SCALE = 0.05f;
-    private EntityManagerNew entityManager;
+    private EntityManager entityManager;
+    private BulletType bulletType;
+    public enum BulletType {
+    	PLAYER,
+    	DRONE
+    }
    
     // constructors
-    public Bullet(float startX, float startY, float width, float height, Texture texture, EntityManagerNew entityManager) {
-        super(startX, startY, width, height, BULLET_SPEED, BULLET_SCALE, texture);
-        this.scale = BULLET_SCALE;
+    public Bullet(float startX, float startY, float width, float height, int speed, float scale, Texture texture, EntityManager entityManager, Bullet.BulletType bulletType) {
+        super(startX, startY, width, height, speed, scale, texture);
         this.entityManager = entityManager;
+        this.bulletType = bulletType;
         }
     
+	public BulletType getBulletType() {
+		return bulletType;
+	}
+
+	public void setBulletType(BulletType bulletType) {
+		this.bulletType = bulletType;
+	}
+
 	@Override
-    public void update() {
-        setY(getY() + getSpeed());
+    public void update(float dt) {
+		if (getBulletType() == BulletType.PLAYER) {
+	        setY(getY() + getSpeed());
+		} else if (getBulletType() == BulletType.DRONE) {
+			setY(getY() - getSpeed());
+		}
     }
 
 	@Override
@@ -39,7 +53,11 @@ public class Bullet extends ParentEntity {
 		Player player = entityManager.getEntitiesByType(Player.class).stream().findFirst().orElse(null);
         if (entityB.getEntityType().equals(Asteroid.class) && entityB instanceof Asteroid) {
 			entityManager.removeEntity(this);
-			ScoreManager.addScore(100);
+			ScoreManager.addScore(((Asteroid) entityB).getPointsPerAsteroid());
+        }
+        if (entityB.getEntityType().equals(Drone.class) && entityB instanceof Drone) {
+			entityManager.removeEntity(this);
+			ScoreManager.addScore(((Drone) entityB).getPointsPerDrone());
 	    }
 	}
 }

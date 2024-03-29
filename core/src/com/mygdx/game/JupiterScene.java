@@ -8,16 +8,17 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.mygdx.engine.GameScene;
+import com.mygdx.engine.SimulationLifecycleManagement;
+import com.mygdx.engine.iGameScene;
 import com.mygdx.engine.SceneManager;
 import com.mygdx.engine.ScoreManager;
 
-public class JupiterScene implements GameScene {
+public class JupiterScene implements iGameScene {
     private SimulationLifecycleManagement simulation;
     private SceneManager sceneManager;
     private BitmapFont font;
     private SpriteBatch batch;
-    private Texture playerTexture, bulletTexture, asteroidTexture, heartTexture, healthPowerUpTexture, backgroundTexture;
+    private Texture playerTexture, bulletTexture, asteroidTexture, heartTexture, healthPowerUpTexture, backgroundTexture, droneTexture, blackHoleTexture;
     private Music bgMusic;
     private Sound shootingSound, passed;
     private boolean isPaused;
@@ -35,6 +36,8 @@ public class JupiterScene implements GameScene {
         asteroidTexture = new Texture("asteroid.png");
         heartTexture = new Texture("heart.png");
         healthPowerUpTexture = new Texture("health_powerup.png");
+        droneTexture = new Texture("drone.png");
+        blackHoleTexture = new Texture("blackhole.png");
         backgroundTexture = new Texture("jupiter_bg.jpg");
 
         font = new BitmapFont();
@@ -49,7 +52,7 @@ public class JupiterScene implements GameScene {
 
         float volume = 0.3f;
         simulation = new SimulationLifecycleManagement(playerTexture, bulletTexture, asteroidTexture,
-                heartTexture, healthPowerUpTexture,
+                heartTexture, healthPowerUpTexture, droneTexture, blackHoleTexture,
                 shootingSound, volume, sceneManager);
 
     }
@@ -58,7 +61,7 @@ public class JupiterScene implements GameScene {
         if (!isPaused) {
             simulation.update(dt);
         }
-        if (ScoreManager.getScore() >= 6000) {
+        if (ScoreManager.getScore() >= 15000) {
             passed.play(0.3f);
             sceneManager.setScene(new CutSceneSpace2(sceneManager));
         }
@@ -111,6 +114,7 @@ public class JupiterScene implements GameScene {
         heartTexture.dispose();
         healthPowerUpTexture.dispose();
         backgroundTexture.dispose();
+        droneTexture.dispose();
         bgMusic.dispose();
         simulation.dispose();
         sceneManager.dispose();

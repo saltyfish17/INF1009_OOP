@@ -8,12 +8,12 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.mygdx.engine.GameScene;
+import com.mygdx.engine.SimulationLifecycleManagement;
+import com.mygdx.engine.iGameScene;
 import com.mygdx.engine.SceneManager;
 import com.mygdx.engine.ScoreManager;
-import com.mygdx.engine.SimulationLifecycleManagement;
 
-public class SpaceSceneInfinite implements GameScene {
+public class SpaceSceneInfinite implements iGameScene {
     private SimulationLifecycleManagement simulation;
     private SceneManager sceneManager;
     private BitmapFont font;

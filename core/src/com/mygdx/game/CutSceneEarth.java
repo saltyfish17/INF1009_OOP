@@ -1,22 +1,18 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.mygdx.engine.GameScene;
+import com.mygdx.engine.iGameScene;
 import com.mygdx.engine.SceneManager;
 import com.badlogic.gdx.utils.Timer;
 
-public class CutSceneEarth implements GameScene {
+public class CutSceneEarth implements iGameScene {
     private SceneManager sceneManager;
     private BitmapFont font;
-    private String fullText1 = "Earth...in the year 3034.\n Destoy as many enemies as possible!";
+    private String fullText1 = "Earth...in the year 3034.\n Destoy as many enemies as possible \n and explore the solar system!";
     private String[] words;
     private int currentWordIndex = 0;
     private StringBuilder displayedText = new StringBuilder();
@@ -29,7 +25,7 @@ public class CutSceneEarth implements GameScene {
     }
 
     private void startTextAnimation() {
-        float delay = 0.3f; // Delay in seconds between words
+        float delay = 0.1f; // Delay in seconds between words
 
         Timer.schedule(new Timer.Task() {
             @Override

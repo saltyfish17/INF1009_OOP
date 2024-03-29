@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
-import com.mygdx.engine.EntityManagerNew;
+import com.mygdx.engine.EntityManager;
 
 public class ExplosionManager {
     private Array<TextureRegion> explosionFrames;
@@ -40,7 +40,7 @@ public class ExplosionManager {
         }
     }
 
-    public void updateExplosions(EntityManagerNew entityManager) {
+    public void updateExplosions(EntityManager entityManager) {
     	float dt = Gdx.graphics.getDeltaTime();
     	
         for (int i = 0; i < entityManager.getRemovedEntities().size(); i++) {
@@ -49,16 +49,25 @@ public class ExplosionManager {
                 float collisionY = ((Asteroid) entityManager.getRemovedEntities().get(i)).getY();
                 triggerExplosion(collisionX - 30, collisionY - 50);
                 entityManager.removeRemovedEntity(entityManager.getRemovedEntities().get(i));
-            }
-        }
-        
-        for (int i = 0; i < entityManager.getRemovedEntities().size(); i++) {
-            if (entityManager.getRemovedEntities().get(i) instanceof HealthPowerUp) {
-                float collisionX = ((HealthPowerUp) entityManager.getRemovedEntities().get(i)).getX();
-                float collisionY = ((HealthPowerUp) entityManager.getRemovedEntities().get(i)).getY();
-                triggerHeartExplosion(collisionX - 30, collisionY - 50);
+            } else if (entityManager.getRemovedEntities().get(i) instanceof HealthPowerUp) {
+        		float collisionX = ((HealthPowerUp) entityManager.getRemovedEntities().get(i)).getX();
+        		float collisionY = ((HealthPowerUp) entityManager.getRemovedEntities().get(i)).getY();
+        		triggerHeartExplosion(collisionX - 30, collisionY - 50);
+        		entityManager.removeRemovedEntity(entityManager.getRemovedEntities().get(i));
+            } else if (entityManager.getRemovedEntities().get(i) instanceof Drone) {
+            	float collisionX = ((Drone) entityManager.getRemovedEntities().get(i)).getX();
+                float collisionY = ((Drone) entityManager.getRemovedEntities().get(i)).getY();
+                triggerExplosion(collisionX - 30, collisionY - 50);
                 entityManager.removeRemovedEntity(entityManager.getRemovedEntities().get(i));
             }
+        
+//        for (int i = 0; i < entityManager.getRemovedEntities().size(); i++) {
+//            if (entityManager.getRemovedEntities().get(i) instanceof HealthPowerUp) {
+//                float collisionX = ((HealthPowerUp) entityManager.getRemovedEntities().get(i)).getX();
+//                float collisionY = ((HealthPowerUp) entityManager.getRemovedEntities().get(i)).getY();
+//                triggerHeartExplosion(collisionX - 30, collisionY - 50);
+//                entityManager.removeRemovedEntity(entityManager.getRemovedEntities().get(i));
+//            }
         }
         
         // Remove finished explosions
@@ -79,13 +88,13 @@ public class ExplosionManager {
     }
 
     private void triggerExplosion(float x, float y) {
-        Explosion explosion = new Explosion(explosionFrames, 0.1f);
+        Explosion explosion = new Explosion(explosionFrames, 0.04f);
         explosion.trigger(x, y);
         explosions.add(explosion);
     }
     
     private void triggerHeartExplosion(float x, float y) {
-        Explosion explosion = new Explosion(heartExplosionFrames, 0.1f);
+        Explosion explosion = new Explosion(heartExplosionFrames, 0.04f);
         explosion.trigger(x, y);
         explosions.add(explosion);
     }

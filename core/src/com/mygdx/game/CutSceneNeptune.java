@@ -6,13 +6,13 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Timer;
-import com.mygdx.engine.GameScene;
+import com.mygdx.engine.iGameScene;
 import com.mygdx.engine.SceneManager;
 
-public class CutSceneNeptune implements GameScene {
+public class CutSceneNeptune implements iGameScene {
     private SceneManager sceneManager;
     private BitmapFont font;
-    private String fullText1 = "You are approaching Neptune, the blue planet.\nNeptune is the last planet in the solar system.\nFurther than that is an asteroid belt and empty space.\nYou hope to find salvation here.";
+    private String fullText1 = "You are approaching Neptune, the blue planet.\nNeptune is the last planet in the solar system.\nFurther than that is an asteroid belt and empty space.\nIt is thought to rain diamonds in this cold land...\n\nYou hope to find salvation here.";
     private String[] words;
     private int currentWordIndex = 0;
     private StringBuilder displayedText = new StringBuilder();
@@ -25,7 +25,7 @@ public class CutSceneNeptune implements GameScene {
     }
 
     private void startTextAnimation() {
-        float delay = 0.3f; // Delay in seconds between words
+        float delay = 0.1f; // Delay in seconds between words
 
         Timer.schedule(new Timer.Task() {
             @Override

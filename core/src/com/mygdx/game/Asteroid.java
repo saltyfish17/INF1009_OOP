@@ -4,28 +4,22 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.mygdx.engine.EntityManagerNew;
+import com.mygdx.engine.EntityManager;
 import com.mygdx.engine.ParentEntity;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.utils.Array;
 
 public class Asteroid extends ParentEntity {
-    private static final int ASTEROID_SPEED = 4;
-    private static final float ASTEROID_SCALE = 0.04f;
+    private static final int ASTEROID_SPEED = 7;
+    private static final float ASTEROID_SCALE = 0.05f;
     
     private boolean isDestroyed;
     private int pointsPerAsteroid;
-    private EntityManagerNew entityManager; 
+    private EntityManager entityManager; 
     private Sound explosionSound; // Sound for explosion
     private float explosionVolume; // Volume for explosion sound
-
-
-      //private Explosion explosion;
-    //private Array<TextureRegion> explosionFrames;
     
     // constructors
-    public Asteroid(Texture texture, EntityManagerNew entityManager,float explosionVolume) {
+    public Asteroid(Texture texture, EntityManager entityManager,float explosionVolume) {
     	super(MathUtils.random(0, Gdx.graphics.getWidth() - texture.getWidth() * ASTEROID_SCALE), // random START_X value
     			MathUtils.random(Gdx.graphics.getHeight(), Gdx.graphics.getHeight() * 2), // random START_Y value
     			50, 50, ASTEROID_SPEED, ASTEROID_SCALE, texture); // width, height, speed, scale, texture
@@ -60,7 +54,7 @@ public class Asteroid extends ParentEntity {
 	}
 
     @Override
-    public void update() {
+    public void update(float dt) {
         setY(getY() - getSpeed());
     }
 

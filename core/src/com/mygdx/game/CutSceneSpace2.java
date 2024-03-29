@@ -6,10 +6,10 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Timer;
-import com.mygdx.engine.GameScene;
+import com.mygdx.engine.iGameScene;
 import com.mygdx.engine.SceneManager;
 
-public class CutSceneSpace2 implements GameScene {
+public class CutSceneSpace2 implements iGameScene {
     private SceneManager sceneManager;
     private BitmapFont font;
     private String fullText1 = "Jupiter planet is hostile. You leave immediately..\nOnce again, you have reached space where there's no gravity.\nYou are travelling faster this time so avoid or destroy the asteroids for 35 seconds!";
@@ -25,7 +25,7 @@ public class CutSceneSpace2 implements GameScene {
     }
 
     private void startTextAnimation() {
-        float delay = 0.3f; // Delay in seconds between words
+        float delay = 0.1f; // Delay in seconds between words
 
         Timer.schedule(new Timer.Task() {
             @Override

@@ -9,10 +9,10 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.mygdx.engine.GameScene;
+import com.mygdx.engine.iGameScene;
 import com.mygdx.engine.SceneManager;
 
-public class GameOverScene implements GameScene {
+public class GameOverScene implements iGameScene {
     private SceneManager sceneManager;
     private SpriteBatch batch;
     private BitmapFont font;

@@ -6,10 +6,10 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Timer;
-import com.mygdx.engine.GameScene;
+import com.mygdx.engine.iGameScene;
 import com.mygdx.engine.SceneManager;
 
-public class CutSceneJupiter implements GameScene {
+public class CutSceneJupiter implements iGameScene {
     private SceneManager sceneManager;
     private BitmapFont font;
     private String fullText1 = "You are approaching Jupiter, 2nd planet closest to Earth.\n5th planet in the solar system.\nDestroy as many enemy as possible!";
@@ -25,7 +25,7 @@ public class CutSceneJupiter implements GameScene {
     }
 
     private void startTextAnimation() {
-        float delay = 0.3f; // Delay in seconds between words
+        float delay = 0.1f; // Delay in seconds between words
 
         Timer.schedule(new Timer.Task() {
             @Override

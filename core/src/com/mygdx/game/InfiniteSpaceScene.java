@@ -13,17 +13,19 @@ import com.mygdx.engine.iGameScene;
 import com.mygdx.engine.SceneManager;
 import com.mygdx.engine.ScoreManager;
 
-public class EarthScene implements iGameScene {
+public class InfiniteSpaceScene implements iGameScene {
     private SimulationLifecycleManagement simulation;
     private SceneManager sceneManager;
     private BitmapFont font;
     private SpriteBatch batch;
-    private Texture playerTexture, bulletTexture, asteroidTexture, heartTexture, healthPowerUpTexture, backgroundTexture;
+    private Texture playerTexture, bulletTexture, asteroidTexture, heartTexture, healthPowerUpTexture, droneTexture, blackHoleTexture, backgroundTexture;
     private Music bgMusic;
-    private Sound shootingSound, passed;
+    private Sound shootingSound;
     private boolean isPaused;
+    private float elapsedTime = 0;
+    float speedMultiplier = 1.8f;
 
-    public EarthScene(SceneManager sceneManager) {
+    public InfiniteSpaceScene(SceneManager sceneManager) {
         this.sceneManager = sceneManager;
         isPaused = false;
     }
@@ -36,33 +38,30 @@ public class EarthScene implements iGameScene {
         asteroidTexture = new Texture("asteroid.png");
         heartTexture = new Texture("heart.png");
         healthPowerUpTexture = new Texture("health_powerup.png");
-        backgroundTexture = new Texture("earth_bg.png");
+        droneTexture = new Texture("drone.png");
+        blackHoleTexture = new Texture("blackhole.png");
+        backgroundTexture = new Texture("space_bg.png");
 
         font = new BitmapFont();
 
         shootingSound = Gdx.audio.newSound(Gdx.files.internal("pew.mp3"));
-        passed = Gdx.audio.newSound(Gdx.files.internal("passed.mp3"));
 
-        bgMusic = Gdx.audio.newMusic(Gdx.files.internal("earth.mp3"));
+        bgMusic = Gdx.audio.newMusic(Gdx.files.internal("jupiter.mp3"));
         bgMusic.setLooping(true);
         bgMusic.setVolume(0.3f);
         bgMusic.play();
 
         float volume = 0.3f;
         simulation = new SimulationLifecycleManagement(playerTexture, bulletTexture, asteroidTexture,
-                heartTexture, healthPowerUpTexture,
+                heartTexture, healthPowerUpTexture, droneTexture, blackHoleTexture,
                 shootingSound, volume, sceneManager);
 
     }
     @Override
     public void update(float dt) {
+        dt *= speedMultiplier;
         if (!isPaused) {
             simulation.update(dt);
-        }
-
-        if (ScoreManager.getScore() >= 4000) {
-            passed.play(0.3f);
-            sceneManager.setScene(new CutSceneSpace1(sceneManager));
         }
     }
 
