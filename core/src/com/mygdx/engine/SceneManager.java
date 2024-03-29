@@ -2,18 +2,15 @@ package com.mygdx.engine;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import java.util.Stack;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class SceneManager {
-    private Stack<GameScene> scenes;
+    private Stack<iGameScene> scenes;
 
     public SceneManager() {
         scenes = new Stack<>();
     }
 
-    public void pushScene(GameScene scene) {
+    public void pushScene(iGameScene scene) {
         scenes.push(scene);
         scene.create();
     }
@@ -24,7 +21,7 @@ public class SceneManager {
         }
     }
 
-    public void setScene(GameScene scene) {
+    public void setScene(iGameScene scene) {
         while (!scenes.isEmpty()) {
             scenes.pop().dispose();
         }
@@ -39,16 +36,10 @@ public class SceneManager {
     public void render(SpriteBatch batch) {
         scenes.peek().render(batch);
     }
-    public void resize(int width, int height) {
-    }
-    public int getSceneCount() {
-        return scenes.size();
-    }
+
     public void dispose() {
         if (!scenes.isEmpty()) {
             scenes.peek().dispose();
         }
     }
-
-
 }

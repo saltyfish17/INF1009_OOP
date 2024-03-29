@@ -3,7 +3,7 @@ package com.mygdx.engine;
  import java.util.List;
 
 public class CollisionManagement {
-    public void checkCollisions(EntityManagerNew entityManager) {
+    public void checkCollisions(EntityManager entityManager) {
     	List<ParentEntity> entities = entityManager.getAllEntities();
 
         for (int i = 0; i < entities.size(); i++) {

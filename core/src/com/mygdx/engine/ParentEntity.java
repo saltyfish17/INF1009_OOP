@@ -25,7 +25,7 @@ public abstract class ParentEntity {
     }
     	
     // to be implemented abstract methods
-    public abstract void update();
+    public abstract void update(float dt);
     public abstract void render(SpriteBatch batch, float dt);
     public abstract Class<? extends ParentEntity> getEntityType();
 
@@ -33,27 +33,27 @@ public abstract class ParentEntity {
     public int getId() {
     	return id;
     }
-    
     public void setId(int id) {
     	this.id = id;
     }
-    
+
+
     public float getX() {
         return x;
     }
-
     public void setX(float x) {
         this.x = x;
     }
 
+
     public float getY() {
         return y;
     }
-
     public void setY(float y) {
         this.y = y;
     }
-    
+
+
     public float getWidth() {
 		return width;
 	}
@@ -61,6 +61,7 @@ public abstract class ParentEntity {
 	public void setWidth(float width) {
 		this.width = width;
 	}
+
 
 	public float getHeight() {
 		return height;
@@ -70,42 +71,24 @@ public abstract class ParentEntity {
 		this.height = height;
 	}
 
+
 	public int getSpeed() {
 		return speed;
-	}
-
-	public void setSpeed(int speed) {
-		this.speed = speed;
 	}
 
 	public float getScale() {
 		return scale;
 	}
 
-	public void setScale(float scale) {
-		this.scale = scale;
-	}
-
-	public boolean getIsActive() {
-    	return isActive;
-    }
-    
-    public void setIsActive(boolean isActive) {
-    	this.isActive = isActive;
-    }
-   
     public Texture getTexture() {
         return texture;
     }
-    
     public float getTextureWidth() {
         return texture.getWidth(); // width = texture width size
     }
-
     public float getTextureHeight() {
         return texture.getHeight(); // height = texture height size
     }
-    
     public abstract void handleCollision(ParentEntity entityB);
     
 }
